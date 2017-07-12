@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Gordon\.android\build-cache\41cb88fc26759209c646ca570e79ea00a9778117\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="8531f2d46b35de75e6130f25830e0c2c0d6bb98c">
+        <dex dex="C:\Users\Gordon\Desktop\android-BluetoothLeGatt-master\Application\build\intermediates\pre-dexed\debug\classes_d838f4f6013721ce205b55af3657a16e84c303e9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Gordon\.android\build-cache\952f6dcfc1dcb094a659916ddef33e2b3e1fc44b\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="914f5d3e3ace66080e59613708f06d129a222e25">
+        <dex dex="C:\Users\Gordon\Desktop\android-BluetoothLeGatt-master\Application\build\intermediates\pre-dexed\debug\classes_b3f15154531ce04910ad4fb28be8b248ec18e95f.jar" />
+    </item>
+
+</items>
