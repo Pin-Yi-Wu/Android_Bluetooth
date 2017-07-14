@@ -103,12 +103,6 @@ public class DeviceControlActivity extends Activity {
         }
     };
 
-    // Handles various events fired by the Service.
-    // ACTION_GATT_CONNECTED: connected to a GATT server.
-    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
-    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
-    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
-    //                        or notification operations.
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -184,45 +178,47 @@ public class DeviceControlActivity extends Activity {
                             //mBluetoothLeService.readCharacteristic(characteristic);
                             byte[] value = new byte[20];
                             value[0] = (byte) 0x00;
+                            byte[] value2 = {0x00, (byte) (0xB9) , 0x0D, (byte) (0x90), 0x2F};
+
                             if(edittext_input_value.getText().toString().equals("")){
                                 Toast.makeText(getApplicationContext(), "请输入！", Toast.LENGTH_SHORT).show();
                             }else{
-                                WriteBytes = edittext_input_value.getText().toString().getBytes();
-                                characteristic.setValue(value[0],BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-                                characteristic.setValue(WriteBytes);
-                                mBluetoothLeService.writeCharacteristic(characteristic);
-                                Toast.makeText(getApplicationContext(), "写入成功！", Toast.LENGTH_SHORT).show();
-                            }
+
+//                                    WriteBytes = edittext_input_value.getText().toString().getBytes();
+//                                    characteristic.setValue(value[0], BluetoothGattCharacteristic.FORMAT_UINT8, 0);
+                                    characteristic.setValue(value2);
+
+                                    mBluetoothLeService.writeCharacteristic(characteristic);
+                                    Toast.makeText(getApplicationContext(), "写入成功！", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),bytesToHex(value2) , Toast.LENGTH_SHORT).show();
+                                }
 
                             edittext_input_value.setText("");
                         }
-                        byte[] value = {0x00, (byte) (0xB9) , 0x0D, (byte) (0x90), 0x2F};
-                        if(!characteristic.setValue(value))
-                        {
-                            Log.w(TAG, "Couldn't set characteristic's local value");
-                            //return;
-                        }
-
+//                        if(!characteristic.setValue(value))
+//                        {
+//                            Log.w(TAG, "Couldn't set characteristic's local value");
+//                            //return;
+//                        }
                         characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
 
-
-
-                    /*if(!writeCharacteristic.writeCharacteristic(characteristic))
-                    {
-                        Log.w(TAG, "Couldn't write characteristic");
-                    }*/
-
-//                        if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
-//                            mNotifyCharacteristic = characteristic;
-//                            mBluetoothLeService.setCharacteristicNotification(
-//                                    characteristic, true);
-//                        }
                         return true;
                     }
                     return false;
                 }
-
     };
+
+
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for ( int j = 0; j < bytes.length; j++ ) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
 
     private void clearUI() {
         mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
@@ -332,9 +328,6 @@ public class DeviceControlActivity extends Activity {
         }
     }
 
-    // Demonstrates how to iterate through the supported GATT Services/Characteristics.
-    // In this sample, we populate the data structure that is bound to the ExpandableListView
-    // on the UI.
     private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
         String uuid = null;
@@ -397,10 +390,4 @@ public class DeviceControlActivity extends Activity {
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         return intentFilter;
     }
-
-    private byte[] getInputBytes() {
-        return HexString.hexToBytes(edittext_input_value.getText().toString());
-    }
-
-
 }
